@@ -39,22 +39,26 @@ class AppViewModel : ViewModel() {
 
     /** Called when user picks an Excel file on HomeScreen */
     fun onFileSelected(file: File) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val students = ExcelHelper.readStudents(file)
-            withContext(Dispatchers.Main) {
-                _state.value = if (students.isEmpty())
-                    AppState.Error("No students found in '${file.name}'. Check the format.")
-                else
-                    AppState.Preview(file = file, students = students)
+        viewModelScope.launch {
+            // Show loading immediately — user knows something is happening
+            _state.value = AppState.Calculating("Extracting data from '${file.name}'...\nPlease wait.")
+
+            val students = withContext(Dispatchers.IO) {
+                ExcelHelper.readStudents(file)
             }
+
+            _state.value = if (students.isEmpty())
+                AppState.Error("No students found in '${file.name}'.\n\nMake sure:\n• Row 1 is a header row\n• Column A contains student names\n• Columns B+ contain numeric scores")
+            else
+                AppState.Preview(file = file, students = students)
         }
     }
 
     /** Called when user confirms preview — triggers calculation */
     fun onConfirmCalculation(file: File, students: List<Student>) {
         viewModelScope.launch {
-            _state.value = AppState.Calculating
-            delay(800)  // brief loading so it feels intentional
+            _state.value = AppState.Calculating("Calculating grades...\nPlease wait.")
+            delay(800)
 
             val results = withContext(Dispatchers.Default) {
                 calculator.calculateAll(students)

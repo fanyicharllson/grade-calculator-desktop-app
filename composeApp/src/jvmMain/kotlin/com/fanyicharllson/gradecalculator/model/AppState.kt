@@ -18,12 +18,15 @@ sealed class AppState {
      * @param students Parsed students ready to preview
      */
     data class Preview(
-        val file: File,
-        val students: List<Student>
+        val file     : File,
+        val students : List<Student>
     ) : AppState()
 
-    /** Calculating — brief loading state between Preview and Results */
-    object Calculating : AppState()
+    /**
+     * Loading state — used both during file import and grade calculation.
+     * @param message What to show the user on the loading screen.
+     */
+    data class Calculating(val message: String) : AppState()
 
     /**
      * Calculation done — showing results with export options.
@@ -31,8 +34,8 @@ sealed class AppState {
      * @param results  Pairs of Student → GradeResult
      */
     data class Results(
-        val file: File,
-        val results: List<Pair<Student, GradeResult>>
+        val file    : File,
+        val results : List<Pair<Student, GradeResult>>
     ) : AppState()
 
     /**
@@ -41,3 +44,5 @@ sealed class AppState {
      */
     data class Error(val message: String) : AppState()
 }
+
+

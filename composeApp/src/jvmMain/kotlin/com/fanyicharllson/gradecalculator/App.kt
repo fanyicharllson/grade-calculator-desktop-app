@@ -50,7 +50,7 @@ fun App(viewModel: AppViewModel = viewModel { AppViewModel() }) {
                 viewModel = viewModel
             )
 
-            is AppState.Calculating -> LoadingScreen()
+            is AppState.Calculating -> LoadingScreen(currentState.message)
             is AppState.Results -> ResultScreen(
                 sourceFile = currentState.file,
                 results = currentState.results,
@@ -67,15 +67,26 @@ fun App(viewModel: AppViewModel = viewModel { AppViewModel() }) {
 
 
 @Composable
-private fun LoadingScreen() {
+private fun LoadingScreen(message: String = "Calculating grades...") {
     Box(
         modifier = Modifier.fillMaxSize().background(DarkBg),
         contentAlignment = Alignment.Center
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.widthIn(max = 380.dp)
+        ) {
             CircularProgressIndicator(color = BluePrimary, strokeWidth = 3.dp)
-            Spacer(Modifier.height(16.dp))
-            Text("Calculating grades...", color = GrayMid, fontSize = 15.sp)
+            Spacer(Modifier.height(20.dp))
+            // Split on newline so multiline messages display properly
+            message.split("\n").forEach { line ->
+                Text(
+                    line,
+                    color = if (line == message.split("\n").first()) OffWhite else GrayMid,
+                    fontSize = if (line == message.split("\n").first()) 15.sp else 13.sp,
+                    fontWeight = if (line == message.split("\n").first()) FontWeight.SemiBold else FontWeight.Normal
+                )
+            }
         }
     }
 }
