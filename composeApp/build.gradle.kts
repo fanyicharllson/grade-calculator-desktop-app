@@ -27,6 +27,9 @@ kotlin {
             implementation("org.apache.poi:poi-ooxml:5.2.3") // Excel
             implementation("com.github.librepdf:openpdf:1.3.30") // PDF
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3") // JSON/XML
+            // Log4j2 implementation (required by Apache POI)
+            implementation("org.apache.logging.log4j:log4j-core:2.20.0")
+            implementation("org.apache.logging.log4j:log4j-api:2.20.0")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
