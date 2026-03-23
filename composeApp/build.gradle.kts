@@ -47,9 +47,25 @@ compose.desktop {
         mainClass = "com.fanyicharllson.gradecalculator.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.fanyicharllson.gradecalculator"
-            packageVersion = "1.0.0"
+//            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Msi)
+            packageName        = "GradeCalculator"
+            packageVersion     = "1.0.0"
+            description        = "Student Grade Calculator — ICT University"
+            copyright          = "Fanyi Charllson"
+            vendor             = "Fanyi Charllson"
+
+            windows {
+                // Creates desktop shortcut
+                shortcut           = true
+                // Adds to Start Menu
+                menu               = true
+                menuGroup          = "Grade Calculator"
+                // Icon file — place a .ico file in composeApp/src/desktopMain/resources/
+//                iconFile.set(project.file("src/desktopMain/resources/icon.ico"))
+                // Upgrade UUID — keeps installer consistent across versions
+                upgradeUuid        = "8A3F2C1D-4B5E-6F7A-8B9C-0D1E2F3A4B5C"
+            }
         }
     }
 }
