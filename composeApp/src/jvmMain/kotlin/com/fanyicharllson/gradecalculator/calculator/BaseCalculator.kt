@@ -22,6 +22,7 @@ abstract class BaseCalculator(
             "Pass threshold cannot be negative — got $passThreshold"
         }
         println("  [Calculator] Initialized — Scale: $scaleName | Pass threshold: $passThreshold")
+        println("Just printing to the console")
     }
 
     /**
